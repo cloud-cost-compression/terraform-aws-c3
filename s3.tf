@@ -1,7 +1,7 @@
 # --- s3.tf ---
 
 resource "aws_s3_bucket" "c3_metadata" {
-  bucket = "c3-metadata-${data.aws_caller_identity.current.account_id}"
+  bucket = "c3-metadata-${var.region}-${data.aws_caller_identity.current.account_id}"
   tags   = local.default_tags
 }
 

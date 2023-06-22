@@ -10,8 +10,8 @@ module "c3" {
   vpc_cidr = "10.0.0.0/16"
   region   = "us-east-1"
   
-  controller_instance_name = "C3 Controller"
-  controller_instance_type = "t3.nano"
+  controller_instance_name = "c3-ec2-controller"
+  controller_instance_type = "t3.small"
   
   eks_cluster_version       = "1.27"
   eks_cluster_min_size      = 1
@@ -59,10 +59,6 @@ module "c3" {
 | Name | Type |
 |------|------|
 | [aws_autoscaling_group.controller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
-| [aws_eks_addon.aws_ebs_csi_driver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.coredns](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.kube_proxy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
-| [aws_eks_addon.vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_addon) | resource |
 | [aws_iam_group.eks_access_administrator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_group) | resource |
 | [aws_iam_group_policy_attachment.eks_access_administrator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_group_policy_attachment) | resource |
 | [aws_iam_policy.assume_eks_admin_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -92,19 +88,19 @@ module "c3" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | `"empty"` | no |
+| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | `""` | no |
 | <a name="input_cluster_logs_retention"></a> [cluster\_logs\_retention](#input\_cluster\_logs\_retention) | Retention of EKS cluster logs (in days) | `number` | `7` | no |
 | <a name="input_cluster_logs_types"></a> [cluster\_logs\_types](#input\_cluster\_logs\_types) | List of enabled logs - supported types: api, audit, authenticator | `list(string)` | <pre>[<br>  "audit",<br>  "api",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |
-| <a name="input_controller_instance_type"></a> [controller\_instance\_type](#input\_controller\_instance\_type) | The Instance Type to use for C3 Controller Node | `string` | `"t3.nano"` | no |
+| <a name="input_controller_instance_type"></a> [controller\_instance\_type](#input\_controller\_instance\_type) | The Instance Type to use for C3 Controller Node | `string` | `"t3.small"` | no |
 | <a name="input_eks_cluster_instance_type"></a> [eks\_cluster\_instance\_type](#input\_eks\_cluster\_instance\_type) | Instance type of the EKS cluster | `string` | `"t3.small"` | no |
 | <a name="input_eks_cluster_max_size"></a> [eks\_cluster\_max\_size](#input\_eks\_cluster\_max\_size) | Maximum number of worker nodes running in the EKS cluster | `string` | `3` | no |
 | <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `string` | `1` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.27"` | no |
-| <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | `"2.8.0-193"` | no |
-| <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | `"evl-ubuntu"` | no |
-| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
+| <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | `""` | no |
+| <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | `""` | no |
+| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"eu-west-1"` | no |
 | <a name="input_s3_data_bucket_arn"></a> [s3\_data\_bucket\_arn](#input\_s3\_data\_bucket\_arn) | ARN of S3 bucket for data processing | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR of C3 VPC | `string` | `"10.0.0.0/16"` | no |
 

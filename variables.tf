@@ -23,8 +23,9 @@ variable "controller_instance_name" {
 }
 variable "controller_instance_type" {
   description = "The Instance Type to use for C3 Controller Node"
-  default     = "t3.nano"
-  type        = string
+  default     = "t3.small"
+
+  type = string
 }
 
 ## EKS cluster ##

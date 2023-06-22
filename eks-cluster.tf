@@ -21,7 +21,7 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  create_cloudwatch_log_group     = true
+  create_cloudwatch_log_group = true
 
   manage_aws_auth_configmap = true
 
@@ -49,9 +49,9 @@ module "eks" {
   }
   eks_managed_node_groups = {
     worker = {
-      name            = "c3-eks-worker-node"
-      min_size        = var.eks_cluster_min_size
-      max_size        = var.eks_cluster_max_size
+      name     = "c3-eks-worker-node"
+      min_size = var.eks_cluster_min_size
+      max_size = var.eks_cluster_max_size
 
       subnet_ids = module.vpc.private_subnets
 
@@ -97,7 +97,7 @@ module "eks_admin_iam_role" {
   create_instance_profile           = false
   create_role                       = true
   role_requires_mfa                 = false
-  role_name                         = "c3-eks-admin"
+  role_name_prefix                  = "c3-eks-admin"
   trusted_role_arns                 = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
   custom_role_policy_arns = [
     aws_iam_policy.eks_describe_cluster.arn
@@ -105,7 +105,8 @@ module "eks_admin_iam_role" {
 }
 
 resource "aws_iam_policy" "eks_describe_cluster" {
-  name        = "eks_describe_cluster_policy"
+  name_prefix = "eks_describe_cluster_policy"
+
   path        = "/"
   description = "Allow describing of the EKS clusters"
 
@@ -127,7 +128,8 @@ resource "aws_iam_policy" "eks_describe_cluster" {
 }
 
 resource "aws_iam_policy" "assume_eks_admin_role" {
-  name        = "eks_admin_access_policy"
+  name_prefix = "eks_admin_access_policy"
+
   path        = "/"
   description = "Allow assuming admin access to the C3 EKS clusters"
 
@@ -149,7 +151,7 @@ resource "aws_iam_policy" "assume_eks_admin_role" {
 }
 
 resource "aws_iam_group" "eks_access_administrator" {
-  name = "c3_eks_administrators"
+  name = "c3-eks-administrators-${var.region}"
 }
 
 resource "aws_iam_group_policy_attachment" "eks_access_administrator" {

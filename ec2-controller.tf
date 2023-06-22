@@ -1,7 +1,8 @@
 # --- ec2-controller.tf ---
 
 resource "aws_iam_policy" "controller" {
-  name        = "controller_policy"
+  name_prefix = "controller_policy"
+
   path        = "/"
   description = "IAM policy for controller"
 
@@ -54,8 +55,9 @@ module "controller_iam_role" {
   create_instance_profile           = true
   create_role                       = true
   role_requires_mfa                 = false
-  role_name                         = var.controller_instance_name
-  trusted_role_services             = ["ec2.amazonaws.com"]
+  role_name_prefix                  = var.controller_instance_name
+
+  trusted_role_services = ["ec2.amazonaws.com"]
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
     aws_iam_policy.controller.arn
@@ -63,7 +65,8 @@ module "controller_iam_role" {
 }
 
 resource "aws_security_group" "controller" {
-  name        = var.controller_instance_name
+  name_prefix = var.controller_instance_name
+
   description = "C3 EC2 controller security group"
   vpc_id      = module.vpc.vpc_id
 
@@ -87,11 +90,11 @@ resource "aws_launch_template" "controller" {
   update_default_version = true
 
   user_data = base64encode(templatefile("${path.module}/scripts/provision.sh", {
-    eks_cluster_name   = module.eks.cluster_name
-    region_name        = var.region
-    evl_app_version    = var.evl_app_version
-    evl_s3_bucket_name = var.evl_s3_bucket_name
-    iam_role_arn       = module.evl_job_iam_role.iam_role_arn
+    eks_cluster_name     = module.eks.cluster_name
+    region_name          = var.region
+    evl_app_version      = var.evl_app_version
+    evl_s3_bucket_name   = var.evl_s3_bucket_name
+    evl_job_iam_role_arn = module.evl_job_iam_role.iam_role_arn
     })
   )
 
@@ -125,6 +128,8 @@ resource "aws_autoscaling_group" "controller" {
   depends_on = [
     module.eks.aws_eks_node_group
   ]
+
+  name_prefix = var.controller_instance_name
 
   min_size          = 1
   max_size          = 2

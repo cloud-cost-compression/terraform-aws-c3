@@ -2,28 +2,6 @@
 
 EVL_VERSION="${1}"
 
-AWS_IAM_ROLE_ARN="${2}"
-
-REGION_NAME="${3}"
-
-EKS_CLUSTER_NAME="${4}"
-
-### k8s-resources
-aws eks --region $REGION_NAME update-kubeconfig --name $EKS_CLUSTER_NAME
-
-kubectl create namespace c3
-
-cat > /tmp/serviceaccount.yaml <<EOF
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: c3
-  namespace: c3
-  annotations: 
-    eks.amazonaws.com/role-arn: ${AWS_IAM_ROLE_ARN}
-EOF
-kubectl apply -f /tmp/serviceaccount.yaml
-
 ### evl-dependencies 
 DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends \
   apt-utils ssh gcc g++ libstdc++6 libc6 libgcc-s1 \
@@ -39,12 +17,12 @@ DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends libparquet
 
 ### evl
 aws s3 sync s3://evl-ubuntu/${EVL_VERSION}/ ./evl-ubuntu/
-DEBIAN_FRONTEND=noninteractive apt -y install \
-  ./evl-ubuntu/evl-utils*.deb \
-  ./evl-ubuntu/evl-tool*.deb \
-  ./evl-ubuntu/evl-data*.deb \
-  ./evl-ubuntu/evl-parquet*.deb
- 
+
+DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-utils*.deb
+DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-tool*.deb
+DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-data*.deb
+DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-parquet*.deb
+
 rm -rf /var/lib/apt/lists/*
 apt -y clean
 

@@ -6,7 +6,7 @@ module "c3_admin_iam_role" {
   create_instance_profile           = false
   create_role                       = true
   role_requires_mfa                 = false
-  role_name                         = "c3-admin"
+  role_name_prefix                  = "c3-admin"
   trusted_role_arns                 = ["arn:aws:iam::${local.c3_admin_aws_account_id}:root"]
   role_sts_externalid               = var.c3_admin_external_id
   custom_role_policy_arns = [
@@ -15,7 +15,8 @@ module "c3_admin_iam_role" {
 }
 
 resource "aws_iam_policy" "c3_admin_policy" {
-  name = "c3-admin-access"
+  name_prefix = "c3-admin-access"
+
   policy = jsonencode({
     Statement = [
       {
@@ -26,7 +27,8 @@ resource "aws_iam_policy" "c3_admin_policy" {
           "ssm:List*",
           "ssm:StartSession",
           "ssm:StartAction",
-          "ec2:Describe*",
+          "ec2:Describe*"
+
         ]
         Resource = [
           "*"

@@ -4,7 +4,7 @@ module "evl_job_iam_role" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version                       = "5.20.0"
   create_role                   = true
-  role_name                     = "c3-evl-job-role"
+  role_name_prefix              = "c3-evl-job-role"
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   oidc_fully_qualified_subjects = ["system:serviceaccount:${local.k8s_namespace_name}:${local.k8s_service_account_name}"]
   role_policy_arns = [
@@ -13,7 +13,8 @@ module "evl_job_iam_role" {
 }
 
 resource "aws_iam_policy" "s3_metadata_access" {
-  name = "access_s3_metadata_policy"
+  name_prefix = "access_s3_metadata_policy"
+
   policy = jsonencode({
     Statement = [
       {
@@ -37,7 +38,8 @@ resource "aws_iam_policy" "s3_metadata_access" {
 resource "aws_iam_policy" "s3_data_access" {
   count = var.s3_data_bucket_arn != "" ? 1 : 0
 
-  name = "access_s3_data_policy"
+  name_prefix = "access_s3_data_policy"
+
   policy = jsonencode({
     Statement = [
       {

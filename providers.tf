@@ -3,13 +3,6 @@
 terraform {
   required_version = "~> 1.5.0"
 
-  cloud {
-    organization = "plectrum-engineering"
-    workspaces {
-      name = "evltool-c3-demo"
-    }
-  }
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
