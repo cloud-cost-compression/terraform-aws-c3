@@ -1,5 +1,5 @@
 # Cloud Cost Compression (C3) Terraform module
-Official Terraform module for infrastructure provisioning of the Cloud Cost Compression application. This module creates an EKS cluster with a controller EC2 instance managed by an autoscaling group. To manage EKS cluster, add your IAM users to `c3_eks_administrators` IAM group. This group can assume `c3-eks-admin` IAM role which has full admin permissions inside C3 EKS cluster.
+Official Terraform module for infrastructure provisioning of the Cloud Cost Compression application. This module creates an EKS cluster with a controller EC2 instance managed by an autoscaling group. To manage EKS cluster, add your IAM users to `c3_eks_administrators` IAM group. This group can assume `c3-eks-admin` IAM role which has full admin permissions inside the C3 EKS cluster.
 
 ## Usage
 ```hcl
@@ -8,7 +8,7 @@ module "c3" {
   version = "~> 1.0"
 
   vpc_cidr = "10.0.0.0/16"
-  region   = "us-east-1"
+  region   = "eu-west-1"
   
   controller_instance_name = "c3-ec2-controller"
   controller_instance_type = "t3.small"
@@ -23,9 +23,9 @@ module "c3" {
   
   s3_data_bucket_arn   = "arn:aws:s3:::sample-bucket"
   
-  evl_app_version      = "2.8.0-193"
-  evl_s3_bucket_name   = "evl-ubuntu"
-  c3_admin_external_id = "foo"
+  evl_app_version      = "2.8.0"
+  evl_s3_bucket_name   = "foo"
+  c3_admin_external_id = "bar"
 }
 ```
 
