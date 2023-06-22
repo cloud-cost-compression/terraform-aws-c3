@@ -17,8 +17,6 @@ install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ### Setup kubectl for particular EKS
 aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}
 
-runuser -l ssm-user -c "aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}"
-
 ### Setup k8s resources
 /usr/local/bin/kubectl --kubeconfig /root/.kube/config create namespace c3
 
