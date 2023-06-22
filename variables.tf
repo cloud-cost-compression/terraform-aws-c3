@@ -93,4 +93,5 @@ variable "evl_s3_bucket_name" {
 variable "c3_admin_external_id" {
   description = "C3 Admin External ID for IAM Role"
   type        = string
+  default     = ""
 }
