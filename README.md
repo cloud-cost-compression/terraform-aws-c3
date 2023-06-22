@@ -88,7 +88,7 @@ module "c3" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | n/a | yes |
+| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | `""` | no |
 | <a name="input_cluster_logs_retention"></a> [cluster\_logs\_retention](#input\_cluster\_logs\_retention) | Retention of EKS cluster logs (in days) | `number` | `7` | no |
 | <a name="input_cluster_logs_types"></a> [cluster\_logs\_types](#input\_cluster\_logs\_types) | List of enabled logs - supported types: api, audit, authenticator | `list(string)` | <pre>[<br>  "audit",<br>  "api",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |

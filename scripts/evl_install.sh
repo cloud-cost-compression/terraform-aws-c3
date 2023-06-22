@@ -1,6 +1,7 @@
 #!/bin/bash
 
-EVL_VERSION="${1}"
+EVL_BUCKET_NAME="${1}"
+EVL_VERSION="${2}"
 
 ### evl-dependencies 
 DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends \
@@ -16,7 +17,7 @@ apt -y update
 DEBIAN_FRONTEND=noninteractive apt -y install --no-install-recommends libparquet-dev
 
 ### evl
-aws s3 sync s3://evl-ubuntu/${EVL_VERSION}/ ./evl-ubuntu/
+aws s3 sync s3://${EVL_BUCKET_NAME}/${EVL_VERSION}/ ./evl-ubuntu/
 
 DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-utils*.deb
 DEBIAN_FRONTEND=noninteractive apt -y install ./evl-ubuntu/evl-tool*.deb
