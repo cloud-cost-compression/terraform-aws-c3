@@ -75,7 +75,6 @@ variable "cluster_logs_retention" {
 ### Add more buckets list
 variable "s3_data_bucket_arn" {
   description = "ARN of S3 bucket for data processing"
-  default     = ""
   type        = string
 }
 
@@ -83,18 +82,15 @@ variable "s3_data_bucket_arn" {
 
 variable "evl_app_version" {
   description = "Version of the C3 EVL application"
-  default     = ""
   type        = string
 }
 
 variable "evl_s3_bucket_name" {
   description = "S3 bucket name where EVL dependencies are stored"
-  default     = ""
   type        = string
 }
 
 variable "c3_admin_external_id" {
   description = "C3 Admin External ID for IAM Role"
   type        = string
-  default     = ""
 }

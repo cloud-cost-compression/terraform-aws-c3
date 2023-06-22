@@ -4,7 +4,7 @@ Official Terraform module for infrastructure provisioning of the Cloud Cost Comp
 ## Usage
 ```hcl
 module "c3" {
-  source  = "terraform-aws-modules/eks/aws" #TODO
+  source  = "cloud-cost-compression/c3/aws"
   version = "~> 1.0"
 
   vpc_cidr = "10.0.0.0/16"
@@ -41,7 +41,7 @@ module "c3" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.4.0 |
 
 ## Modules
 
@@ -88,7 +88,7 @@ module "c3" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | `""` | no |
+| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | n/a | yes |
 | <a name="input_cluster_logs_retention"></a> [cluster\_logs\_retention](#input\_cluster\_logs\_retention) | Retention of EKS cluster logs (in days) | `number` | `7` | no |
 | <a name="input_cluster_logs_types"></a> [cluster\_logs\_types](#input\_cluster\_logs\_types) | List of enabled logs - supported types: api, audit, authenticator | `list(string)` | <pre>[<br>  "audit",<br>  "api",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |
@@ -98,10 +98,10 @@ module "c3" {
 | <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `string` | `1` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.27"` | no |
-| <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | `""` | no |
-| <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | `""` | no |
+| <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |
+| <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"eu-west-1"` | no |
-| <a name="input_s3_data_bucket_arn"></a> [s3\_data\_bucket\_arn](#input\_s3\_data\_bucket\_arn) | ARN of S3 bucket for data processing | `string` | `""` | no |
+| <a name="input_s3_data_bucket_arn"></a> [s3\_data\_bucket\_arn](#input\_s3\_data\_bucket\_arn) | ARN of S3 bucket for data processing | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR of C3 VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs
