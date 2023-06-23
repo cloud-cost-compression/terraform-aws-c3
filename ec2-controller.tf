@@ -125,10 +125,6 @@ resource "aws_launch_template" "controller" {
   })
 }
 resource "aws_autoscaling_group" "controller" {
-  depends_on = [
-    module.eks.aws_eks_node_group
-  ]
-
   name_prefix = var.controller_instance_name
 
   min_size          = 1

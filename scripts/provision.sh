@@ -14,6 +14,8 @@ unzip -q awscliv2.zip
 curl --silent -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+sleep 480
+
 ### Setup kubectl for particular EKS
 aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}
 
