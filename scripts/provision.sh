@@ -35,5 +35,5 @@ EOF
 aws s3 cp s3://${evl_s3_bucket_name}/evl_install.sh .
 
 ### Run install script
-/bin/bash evl_install.sh ${evl_app_version} ${evl_job_iam_role_arn} ${region_name} ${eks_cluster_name}
+/bin/bash evl_install.sh ${evl_app_version} ${evl_s3_bucket_name}
 
