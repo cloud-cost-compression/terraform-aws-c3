@@ -2,18 +2,18 @@
 Official Terraform module for infrastructure provisioning of the Cloud Cost Compression application. This module creates an EKS cluster with a controller EC2 instance managed by an autoscaling group. To manage EKS cluster, add your IAM users to `c3_eks_administrators` IAM group. This group can assume `c3-eks-admin` IAM role which has full admin permissions inside the C3 EKS cluster.
 
 ## Usage
-### Minimum configuration
+### Minimum required configuration
 ```hcl
 module "c3" {
   source  = "cloud-cost-compression/c3/aws"
-  version = "~> 1.0"
+  version = "~> 0.1"
 
-  region   = "eu-west-1"
+  region = "eu-west-1"
   
-  evl_app_version      = "2.8.0"
-  evl_s3_bucket_name   = "foo"
+  evl_app_version = "2.8.0"
 
-  s3_data_bucket_arn   = "arn:aws:s3:::sample-bucket"
+  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-181730553554"
+  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-181730553554"
 }
 ```
 
@@ -21,7 +21,7 @@ module "c3" {
 ```hcl
 module "c3" {
   source  = "cloud-cost-compression/c3/aws"
-  version = "~> 1.0"
+  version = "~> 0.1"
 
   vpc_cidr = "10.0.0.0/16"
   region   = "eu-west-1"
@@ -37,10 +37,11 @@ module "c3" {
   cluster_logs_types        = ["audit", "api", "authenticator"]
   cluster_logs_retention    = 90
   
-  s3_data_bucket_arn   = "arn:aws:s3:::sample-bucket"
-  
   evl_app_version      = "2.8.0"
   evl_s3_bucket_name   = "foo"
+
+  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-181730553554"
+  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-181730553554"
 }
 ```
 
@@ -48,15 +49,15 @@ module "c3" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.4.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.21.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.4 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.21 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.4.0 |
 
 ## Modules
 
@@ -80,9 +81,11 @@ module "c3" {
 | [aws_iam_policy.c3_admin_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.controller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.eks_describe_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.s3_data_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.s3_data_read_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.s3_data_write_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.s3_metadata_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role_policy_attachment.controller_integration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.s3_data_read_bucket_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.s3_data_write_bucket_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_kms_alias.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_launch_template.controller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
@@ -103,7 +106,6 @@ module "c3" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_c3_admin_external_id"></a> [c3\_admin\_external\_id](#input\_c3\_admin\_external\_id) | C3 Admin External ID for IAM Role | `string` | `""` | no |
 | <a name="input_cluster_logs_retention"></a> [cluster\_logs\_retention](#input\_cluster\_logs\_retention) | Retention of EKS cluster logs (in days) | `number` | `7` | no |
 | <a name="input_cluster_logs_types"></a> [cluster\_logs\_types](#input\_cluster\_logs\_types) | List of enabled logs - supported types: api, audit, authenticator | `list(string)` | <pre>[<br>  "audit",<br>  "api",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |
@@ -115,8 +117,9 @@ module "c3" {
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.27"` | no |
 | <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |
 | <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"eu-west-1"` | no |
-| <a name="input_s3_data_bucket_arn"></a> [s3\_data\_bucket\_arn](#input\_s3\_data\_bucket\_arn) | ARN of S3 bucket for data processing | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | n/a | yes |
+| <a name="input_s3_data_read_bucket_name"></a> [s3\_data\_read\_bucket\_name](#input\_s3\_data\_read\_bucket\_name) | ARN of S3 bucket for data read processing | `string` | n/a | yes |
+| <a name="input_s3_data_write_bucket_name"></a> [s3\_data\_write\_bucket\_name](#input\_s3\_data\_write\_bucket\_name) | ARN of S3 bucket for data write processing | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR of C3 VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs

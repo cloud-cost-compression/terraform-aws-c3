@@ -8,7 +8,6 @@ module "c3_admin_iam_role" {
   role_requires_mfa                 = false
   role_name                         = "c3-admin"
   trusted_role_arns                 = ["arn:aws:iam::${local.c3_admin_aws_account_id}:root"]
-  #role_sts_externalid               = var.c3_admin_external_id
   custom_role_policy_arns = [
     aws_iam_policy.c3_admin_policy.arn
   ]
@@ -52,9 +51,9 @@ resource "aws_iam_policy" "c3_admin_policy" {
         Resource = [
           "*"
         ]
-#        Condition : {
-#          "StringEqualsIgnoreCase" : { "aws:ResourceTag/Project" : [local.default_tags.Project] }
-#        },
+        #        Condition : {
+        #          "StringEqualsIgnoreCase" : { "aws:ResourceTag/Project" : [local.default_tags.Project] }
+        #        },
       },
       {
         Sid    = "AllowSSMstartSession"

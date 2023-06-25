@@ -10,7 +10,6 @@ variable "vpc_cidr" {
 variable "region" {
   description = "AWS region"
   type        = string
-  default     = "eu-west-1"
 }
 
 
@@ -73,8 +72,12 @@ variable "cluster_logs_retention" {
 }
 
 ### Add more buckets list
-variable "s3_data_bucket_arn" {
-  description = "ARN of S3 bucket for data processing"
+variable "s3_data_read_bucket_name" {
+  description = "ARN of S3 bucket for data read processing"
+  type        = string
+}
+variable "s3_data_write_bucket_name" {
+  description = "ARN of S3 bucket for data write processing"
   type        = string
 }
 
@@ -88,10 +91,4 @@ variable "evl_app_version" {
 variable "evl_s3_bucket_name" {
   description = "S3 bucket name where EVL dependencies are stored"
   type        = string
-}
-
-variable "c3_admin_external_id" {
-  description = "C3 Admin External ID for IAM Role"
-  type        = string
-  default     = ""
 }

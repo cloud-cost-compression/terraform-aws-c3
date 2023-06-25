@@ -35,10 +35,34 @@ resource "aws_iam_policy" "s3_metadata_access" {
   })
 }
 
-resource "aws_iam_policy" "s3_data_access" {
-  count = var.s3_data_bucket_arn != "" ? 1 : 0
+resource "aws_iam_policy" "s3_data_read_access" {
+  name_prefix = "access_s3_read_data_policy"
 
-  name_prefix = "access_s3_data_policy"
+  policy = jsonencode({
+    Statement = [
+      {
+        Sid    = "AccessDataS3bucket"
+        Effect = "Allow"
+        Action = [
+          "s3:Get*",
+          "s3:List*"
+        ]
+        Resource = [
+          "arn:aws:s3:::${var.s3_data_read_bucket_name}",
+          "arn:aws:s3:::${var.s3_data_read_bucket_name}/*"
+        ]
+      }
+    ]
+    Version = "2012-10-17"
+  })
+}
+resource "aws_iam_role_policy_attachment" "s3_data_read_bucket_role_policy_attachment" {
+  policy_arn = aws_iam_policy.s3_data_read_access.arn
+  role       = module.evl_job_iam_role.iam_role_name
+}
+
+resource "aws_iam_policy" "s3_data_write_access" {
+  name_prefix = "access_s3_write_data_policy"
 
   policy = jsonencode({
     Statement = [
@@ -48,21 +72,19 @@ resource "aws_iam_policy" "s3_data_access" {
         Action = [
           "s3:Get*",
           "s3:List*",
-          "s3:Delete*"
+          "s3:PutObject*",
+          "s3:DeleteObject*"
         ]
         Resource = [
-          var.s3_data_bucket_arn,
-          "${var.s3_data_bucket_arn}/*"
+          "arn:aws:s3:::${var.s3_data_write_bucket_name}",
+          "arn:aws:s3:::${var.s3_data_write_bucket_name}/*"
         ]
       }
     ]
     Version = "2012-10-17"
   })
 }
-
-resource "aws_iam_role_policy_attachment" "controller_integration" {
-  count = var.s3_data_bucket_arn != "" ? 1 : 0
-
-  policy_arn = aws_iam_policy.s3_data_access[0].arn
+resource "aws_iam_role_policy_attachment" "s3_data_write_bucket_role_policy_attachment" {
+  policy_arn = aws_iam_policy.s3_data_write_access.arn
   role       = module.evl_job_iam_role.iam_role_name
 }
