@@ -36,7 +36,8 @@ resource "aws_iam_policy" "controller" {
         Action = [
           "s3:Get*",
           "s3:List*",
-          "s3:Delete*"
+          "s3:PutObject*",
+          "s3:DeleteObject*"
         ]
         Resource = [
           aws_s3_bucket.c3_metadata.arn,

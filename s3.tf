@@ -50,7 +50,8 @@ resource "aws_s3_bucket_policy" "c3_metadata" {
       "Action": [
         "s3:Get*",
         "s3:List*",
-        "s3:Delete*"
+        "s3:PutObject*",
+        "s3:DeleteObject*"
       ]
     },
     {
@@ -63,7 +64,8 @@ resource "aws_s3_bucket_policy" "c3_metadata" {
       "Action": [
         "s3:Get*",
         "s3:List*",
-        "s3:Delete*"
+        "s3:PutObject*",
+        "s3:DeleteObject*"
       ]
     }
   ]
