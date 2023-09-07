@@ -27,3 +27,25 @@ data "aws_ami" "ubuntu2204" {
     values = ["hvm"]
   }
 }
+
+# https://cloud-images.ubuntu.com/aws-eks/
+data "aws_ami" "ubuntu2004_eks_optimized" {
+  most_recent = true
+  owners      = ["099720109477"] # canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu-eks/k8s_${var.eks_cluster_version}/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+

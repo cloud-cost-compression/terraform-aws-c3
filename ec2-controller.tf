@@ -90,7 +90,7 @@ resource "aws_launch_template" "controller" {
   instance_type          = var.controller_instance_type
   update_default_version = true
 
-  user_data = base64encode(templatefile("${path.module}/scripts/provision.sh", {
+  user_data = base64encode(templatefile("${path.module}/scripts/ec2/controller/provision.sh.tftpl", {
     eks_cluster_name     = module.eks.cluster_name
     region_name          = var.region
     evl_app_version      = var.evl_app_version

@@ -43,9 +43,30 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
 
+    ami_id = data.aws_ami.ubuntu2004_eks_optimized.id
+
+    enable_bootstrap_user_data = true
+
     instance_types = [
       var.eks_cluster_instance_type
     ]
+
+    metadata_options = {
+      http_endpoint               = "enabled"
+      http_tokens                 = "required"
+      http_put_response_hop_limit = 1
+    }
+
+    block_device_mappings = {
+      sda = {
+        device_name = "/dev/sda1"
+        ebs = {
+          delete_on_termination = true
+          encrypted             = true
+          volume_type           = "gp3"
+        }
+      }
+    }
   }
   eks_managed_node_groups = {
     worker = {
@@ -54,23 +75,6 @@ module "eks" {
       max_size = var.eks_cluster_max_size
 
       subnet_ids = module.vpc.private_subnets
-
-      metadata_options = {
-        http_endpoint               = "enabled"
-        http_tokens                 = "required"
-        http_put_response_hop_limit = 1
-      }
-
-      block_device_mappings = {
-        xvda = {
-          device_name = "/dev/xvda"
-          ebs = {
-            delete_on_termination = true
-            encrypted             = true
-            volume_type           = "gp3"
-          }
-        }
-      }
 
       tags = local.default_tags
     }
