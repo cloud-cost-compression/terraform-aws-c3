@@ -43,7 +43,7 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
 
-    ami_id = data.aws_ami.ubuntu2004_eks_optimized.id
+    ami_id = "ami-03d04409e764f4d08"
 
     enable_bootstrap_user_data = true
 
@@ -73,6 +73,7 @@ module "eks" {
       name     = "c3-eks-worker-node"
       min_size = var.eks_cluster_min_size
       max_size = var.eks_cluster_max_size
+      desired_size = var.eks_cluster_desired_size
 
       subnet_ids = module.vpc.private_subnets
 
