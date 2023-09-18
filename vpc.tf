@@ -21,6 +21,8 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
+  manage_default_network_acl = false
+
   tags = local.default_tags
 }
 

@@ -12,10 +12,21 @@ resource "aws_iam_policy" "controller" {
         Sid    = "DescribeEKScluster"
         Effect = "Allow"
         Action = [
-          "eks:DescribeCluster"
+          "eks:DescribeCluster",
+          "eks:ListNodegroups"
         ]
         Resource = [
           module.eks.cluster_arn
+        ]
+      },
+      {
+        Sid    = "DescribeEKSnodegroup"
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeNodegroup"
+        ]
+        Resource = [
+          "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:nodegroup/${var.eks_cluster_name}/*"
         ]
       },
       {
@@ -40,8 +51,8 @@ resource "aws_iam_policy" "controller" {
           "s3:DeleteObject*"
         ]
         Resource = [
-          aws_s3_bucket.c3_metadata.arn,
-          "${aws_s3_bucket.c3_metadata.arn}/*"
+          "arn:aws:s3:::c3-metadata-${var.region}-${data.aws_caller_identity.current.account_id}",
+          "arn:aws:s3:::c3-metadata-${var.region}-${data.aws_caller_identity.current.account_id}/*"
         ]
       }
     ]
@@ -85,6 +96,10 @@ resource "aws_security_group" "controller" {
 }
 
 resource "aws_launch_template" "controller" {
+  depends_on = [ 
+    aws_iam_policy.controller
+  ]
+
   name_prefix            = var.controller_instance_name
   image_id               = data.aws_ami.ubuntu2204.id
   instance_type          = var.controller_instance_type

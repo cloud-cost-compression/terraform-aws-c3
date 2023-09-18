@@ -43,7 +43,7 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
 
-    ami_id = "ami-03d04409e764f4d08"
+    ami_id = local.ubuntu2204_ami_id
 
     enable_bootstrap_user_data = true
 

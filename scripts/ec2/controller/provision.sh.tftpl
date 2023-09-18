@@ -14,20 +14,16 @@ unzip -q awscliv2.zip
 curl --silent -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-sleep 120
-echo "Waiting 2 minutes for EKS cluster to be ready ..."
-
-mkdir -p /opt/kube
+### Waiting for EKS cluster to be ready
+echo "Waiting for EKS cluster ${eks_cluster_name} to be ready!"
+NODE_GROUP_NAME=$(aws eks list-nodegroups --cluster-name ${eks_cluster_name} --query "nodegroups[0]" --output text)
+aws eks wait nodegroup-active --cluster-name ${eks_cluster_name} --nodegroup-name $NODE_GROUP_NAME
 
 ### Setup kubectl for particular EKS
-aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name} --kubeconfig /opt/kube/config
-
-export KUBECONFIG="/opt/kube/config"
-echo 'KUBECONFIG="/opt/kube/config"' >> /etc/environment
-chmod 644 /opt/kube/config
+aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}
 
 ### Setup k8s resources
-/usr/local/bin/kubectl create namespace c3
+/usr/local/bin/kubectl --kubeconfig /root/.kube/config create namespace c3
 
 cat > /tmp/serviceaccount.yaml <<EOF
 apiVersion: v1
@@ -38,9 +34,7 @@ metadata:
   annotations: 
     eks.amazonaws.com/role-arn: ${evl_job_iam_role_arn}
 EOF
-/usr/local/bin/kubectl apply -f /tmp/serviceaccount.yaml
-
-/usr/local/bin/kubectl config set-context --current --namespace=c3
+/usr/local/bin/kubectl --kubeconfig /root/.kube/config apply -f /tmp/serviceaccount.yaml
 
 ### Download install script
 aws s3 cp s3://${evl_s3_bucket_name}/evl_install.sh .
