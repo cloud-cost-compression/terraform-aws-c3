@@ -2,7 +2,7 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.15"
+  version = "~> 19.16.0"
 
   cluster_name    = var.eks_cluster_name
   cluster_version = var.eks_cluster_version
@@ -43,7 +43,7 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
 
-    ami_id = local.ubuntu2204_ami_id
+    ami_id = data.aws_ami.ubuntu2004_eks_optimized.id
 
     enable_bootstrap_user_data = true
 
@@ -70,9 +70,9 @@ module "eks" {
   }
   eks_managed_node_groups = {
     worker = {
-      name     = "c3-eks-worker-node"
-      min_size = var.eks_cluster_min_size
-      max_size = var.eks_cluster_max_size
+      name         = "c3-eks-worker-node"
+      min_size     = var.eks_cluster_min_size
+      max_size     = var.eks_cluster_max_size
       desired_size = var.eks_cluster_desired_size
 
       subnet_ids = module.vpc.private_subnets
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "eks_allow_access_from_controller" {
 
 module "eks_admin_iam_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.20.0"
+  version = "~> 5.30.0"
 
   number_of_custom_role_policy_arns = 1
   create_instance_profile           = false

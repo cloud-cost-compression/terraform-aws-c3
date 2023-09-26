@@ -32,6 +32,7 @@ module "c3" {
   eks_cluster_version       = "1.27"
   eks_cluster_min_size      = 1
   eks_cluster_max_size      = 3
+  eks_cluster_desired_size  = 1
   eks_cluster_name          = "c3-eks-cluster"
   eks_cluster_instance_type = "t3.small"
   cluster_logs_types        = ["audit", "api", "authenticator"]
@@ -111,8 +112,9 @@ module "c3" {
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |
 | <a name="input_controller_instance_type"></a> [controller\_instance\_type](#input\_controller\_instance\_type) | The Instance Type to use for C3 Controller Node | `string` | `"t3.small"` | no |
 | <a name="input_eks_cluster_instance_type"></a> [eks\_cluster\_instance\_type](#input\_eks\_cluster\_instance\_type) | Instance type of the EKS cluster | `string` | `"t3.small"` | no |
-| <a name="input_eks_cluster_max_size"></a> [eks\_cluster\_max\_size](#input\_eks\_cluster\_max\_size) | Maximum number of worker nodes running in the EKS cluster | `string` | `3` | no |
-| <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `string` | `1` | no |
+| <a name="input_eks_cluster_max_size"></a> [eks\_cluster\_max\_size](#input\_eks\_cluster\_max\_size) | Maximum number of worker nodes running in the EKS cluster | `number` | `3` | no |
+| <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `number` | `1` | no |
+| <a name="input_eks_cluster_desired_size"></a> [eks\_cluster\_desired\_size](#input\_eks\_cluster\_desired\_size) | Desired number of worker nodes running in the EKS cluster | `number` | `1` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.27"` | no |
 | <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |

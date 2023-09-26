@@ -10,20 +10,31 @@ curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "aws
 unzip -q awscliv2.zip
 ./aws/install
 
+### Waiting for EKS cluster to be ready
+echo "Waiting for EKS cluster ${eks_cluster_name} to be ready ..."
+NODE_GROUP_NAME=$(aws eks list-nodegroups --cluster-name ${eks_cluster_name} --query "nodegroups[0]" --output text)
+aws eks wait nodegroup-active --cluster-name ${eks_cluster_name} --nodegroup-name $NODE_GROUP_NAME
+
 ### kubectl
 curl --silent -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-### Waiting for EKS cluster to be ready
-echo "Waiting for EKS cluster ${eks_cluster_name} to be ready!"
-NODE_GROUP_NAME=$(aws eks list-nodegroups --cluster-name ${eks_cluster_name} --query "nodegroups[0]" --output text)
-aws eks wait nodegroup-active --cluster-name ${eks_cluster_name} --nodegroup-name $NODE_GROUP_NAME
-
-### Setup kubectl for particular EKS
-aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}
-
 ### Setup k8s resources
-/usr/local/bin/kubectl --kubeconfig /root/.kube/config create namespace c3
+for i in {0..9}
+do
+  aws eks --region ${region_name} update-kubeconfig --name ${eks_cluster_name}
+
+  /usr/local/bin/kubectl --kubeconfig /root/.kube/config create namespace c3
+
+  /usr/local/bin/kubectl --kubeconfig /root/.kube/config get namespaces | grep -q c3
+
+  if [[ $(echo $?) == 0 ]]
+  then
+    break
+  fi
+
+  sleep 2
+done
 
 cat > /tmp/serviceaccount.yaml <<EOF
 apiVersion: v1

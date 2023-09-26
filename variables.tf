@@ -37,17 +37,17 @@ variable "eks_cluster_version" {
 variable "eks_cluster_min_size" {
   description = "Minimum number of worker nodes running in the EKS cluster"
   default     = 1
-  type        = string
+  type        = number
 }
 variable "eks_cluster_max_size" {
   description = "Maximum number of worker nodes running in the EKS cluster"
   default     = 3
-  type        = string
+  type        = number
 }
 variable "eks_cluster_desired_size" {
   description = "Desired number of worker nodes running in the EKS cluster"
   default     = 1
-  type        = string
+  type        = number
 }
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster"

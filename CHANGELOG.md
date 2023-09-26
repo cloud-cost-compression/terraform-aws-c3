@@ -1,3 +1,8 @@
+## 2023-09-26 - Release 0.3.0
+- Replace ubuntu2204 by ubuntu2004 for ec2-controller and eks worker nodes
+- Update variables type from string to number
+- Add loop for kubernetes objects creation process
+
 ## 2023-09-18 - Release 0.2.2
 - Update s3 arn reference in ec2-controller policy to do not reference to s3 bucket module
 - Add dependency to ec2 instance for controller iam policy
