@@ -2,7 +2,7 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.16.0"
+  version = "~> 19.17.2"
 
   cluster_name    = var.eks_cluster_name
   cluster_version = var.eks_cluster_version
@@ -43,10 +43,6 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     }
 
-    ami_id = data.aws_ami.ubuntu2004_eks_optimized.id
-
-    enable_bootstrap_user_data = true
-
     instance_types = [
       var.eks_cluster_instance_type
     ]
@@ -59,7 +55,7 @@ module "eks" {
 
     block_device_mappings = {
       sda = {
-        device_name = "/dev/sda1"
+        device_name = "/dev/xvda"
         ebs = {
           delete_on_termination = true
           encrypted             = true

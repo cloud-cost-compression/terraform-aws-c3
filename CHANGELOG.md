@@ -1,3 +1,6 @@
+## 2023-10-10 - Release 0.4.0
+- Replace ubuntu2004 by ubuntu2204 for ec2-controller and ubuntu2004 by amazonlinux eks worker nodes
+
 ## 2023-09-26 - Release 0.3.0
 - Replace ubuntu2204 by ubuntu2004 for ec2-controller and eks worker nodes
 - Update variables type from string to number

@@ -101,7 +101,7 @@ resource "aws_launch_template" "controller" {
   ]
 
   name_prefix            = var.controller_instance_name
-  image_id               = data.aws_ami.ubuntu2004.id
+  image_id               = data.aws_ami.ubuntu2204.id
   instance_type          = var.controller_instance_type
   update_default_version = true
 

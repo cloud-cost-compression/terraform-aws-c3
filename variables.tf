@@ -12,7 +12,6 @@ variable "region" {
   type        = string
 }
 
-
 ## C3 Controller ##
 
 variable "controller_instance_name" {
@@ -31,7 +30,7 @@ variable "controller_instance_type" {
 
 variable "eks_cluster_version" {
   description = "Version of the EKS cluster"
-  default     = "1.27"
+  default     = "1.28"
   type        = string
 }
 variable "eks_cluster_min_size" {

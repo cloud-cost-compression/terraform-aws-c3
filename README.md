@@ -12,8 +12,8 @@ module "c3" {
   
   evl_app_version = "2.8.0"
 
-  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-181730553554"
-  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-181730553554"
+  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-<account_id>"
+  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-<account_id>"
 }
 ```
 
@@ -29,7 +29,7 @@ module "c3" {
   controller_instance_name = "c3-ec2-controller"
   controller_instance_type = "t3.small"
   
-  eks_cluster_version       = "1.27"
+  eks_cluster_version       = "1.28"
   eks_cluster_min_size      = 1
   eks_cluster_max_size      = 3
   eks_cluster_desired_size  = 1
@@ -41,8 +41,8 @@ module "c3" {
   evl_app_version      = "2.8.0"
   evl_s3_bucket_name   = "foo"
 
-  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-181730553554"
-  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-181730553554"
+  s3_data_read_bucket_name  = "c3-data-read-bucket-eu-west-1-<account_id>"
+  s3_data_write_bucket_name = "c3-data-write-bucket-eu-west-1-<account_id>"
 }
 ```
 
@@ -116,7 +116,7 @@ module "c3" {
 | <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `number` | `1` | no |
 | <a name="input_eks_cluster_desired_size"></a> [eks\_cluster\_desired\_size](#input\_eks\_cluster\_desired\_size) | Desired number of worker nodes running in the EKS cluster | `number` | `1` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
-| <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.27"` | no |
+| <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.28"` | no |
 | <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |
 | <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | n/a | yes |
