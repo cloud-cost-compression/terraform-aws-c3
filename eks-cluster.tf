@@ -53,6 +53,8 @@ module "eks" {
       http_put_response_hop_limit = 1
     }
 
+    ebs_optimized = true
+
     block_device_mappings = {
       sda = {
         device_name = "/dev/xvda"
@@ -60,6 +62,7 @@ module "eks" {
           delete_on_termination = true
           encrypted             = true
           volume_type           = "gp3"
+          volume_size           = var.eks_cluster_volume_size
         }
       }
     }

@@ -58,7 +58,7 @@ module "c3" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.20.1 |
 
 ## Modules
 
@@ -66,8 +66,8 @@ module "c3" {
 |------|--------|---------|
 | <a name="module_c3_admin_iam_role"></a> [c3\_admin\_iam\_role](#module\_c3\_admin\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | 5.20.0 |
 | <a name="module_controller_iam_role"></a> [controller\_iam\_role](#module\_controller\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | 5.20.0 |
-| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.15 |
-| <a name="module_eks_admin_iam_role"></a> [eks\_admin\_iam\_role](#module\_eks\_admin\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | 5.20.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.17.2 |
+| <a name="module_eks_admin_iam_role"></a> [eks\_admin\_iam\_role](#module\_eks\_admin\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | ~> 5.30.0 |
 | <a name="module_evl_job_iam_role"></a> [evl\_job\_iam\_role](#module\_evl\_job\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 5.20.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.0.0 |
 
@@ -111,12 +111,13 @@ module "c3" {
 | <a name="input_cluster_logs_types"></a> [cluster\_logs\_types](#input\_cluster\_logs\_types) | List of enabled logs - supported types: api, audit, authenticator | `list(string)` | <pre>[<br>  "audit",<br>  "api",<br>  "authenticator",<br>  "controllerManager",<br>  "scheduler"<br>]</pre> | no |
 | <a name="input_controller_instance_name"></a> [controller\_instance\_name](#input\_controller\_instance\_name) | The Instance Name to use for C3 EC2 Controller Node | `string` | `"c3-ec2-controller"` | no |
 | <a name="input_controller_instance_type"></a> [controller\_instance\_type](#input\_controller\_instance\_type) | The Instance Type to use for C3 Controller Node | `string` | `"t3.small"` | no |
+| <a name="input_eks_cluster_desired_size"></a> [eks\_cluster\_desired\_size](#input\_eks\_cluster\_desired\_size) | Desired number of worker nodes running in the EKS cluster | `number` | `1` | no |
 | <a name="input_eks_cluster_instance_type"></a> [eks\_cluster\_instance\_type](#input\_eks\_cluster\_instance\_type) | Instance type of the EKS cluster | `string` | `"t3.small"` | no |
 | <a name="input_eks_cluster_max_size"></a> [eks\_cluster\_max\_size](#input\_eks\_cluster\_max\_size) | Maximum number of worker nodes running in the EKS cluster | `number` | `3` | no |
 | <a name="input_eks_cluster_min_size"></a> [eks\_cluster\_min\_size](#input\_eks\_cluster\_min\_size) | Minimum number of worker nodes running in the EKS cluster | `number` | `1` | no |
-| <a name="input_eks_cluster_desired_size"></a> [eks\_cluster\_desired\_size](#input\_eks\_cluster\_desired\_size) | Desired number of worker nodes running in the EKS cluster | `number` | `1` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.28"` | no |
+| <a name="input_eks_cluster_volume_size"></a> [eks\_cluster\_volume\_size](#input\_eks\_cluster\_volume\_size) | Volume size of the EKS worker | `number` | `20` | no |
 | <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |
 | <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | n/a | yes |

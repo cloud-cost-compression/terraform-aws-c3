@@ -58,6 +58,11 @@ variable "eks_cluster_instance_type" {
   default     = "t3.small"
   type        = string
 }
+variable "eks_cluster_volume_size" {
+  description = "Volume size of the EKS worker"
+  default     = 20
+  type        = number
+}
 variable "cluster_logs_types" {
   description = "List of enabled logs - supported types: api, audit, authenticator"
   default = [

@@ -1,3 +1,6 @@
+## 2023-10-16 - Release 0.4.1
+- Add variable for eks cluster volume size and enable ebs optimzed
+
 ## 2023-10-10 - Release 0.4.0
 - Replace ubuntu2004 by ubuntu2204 for ec2-controller and ubuntu2004 by amazonlinux eks worker nodes
 
