@@ -11,7 +11,11 @@ variable "region" {
   description = "AWS region"
   type        = string
 }
-
+variable "enable_nat_gateway" {
+  description = "Deploy NAT gateway to the VPC, it is required for initial initialization of EC2 instance and EKS cluster."
+  default     = true
+  type        = bool
+}
 ## C3 Controller ##
 
 variable "controller_instance_name" {
