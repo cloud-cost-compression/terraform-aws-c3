@@ -1,3 +1,7 @@
+## 2024-01-02 - Release 0.4.2
+- Add possibility to disable NAT gateway and replace it by interface endpoints
+- Upgrade module terraform-aws-modules/vpc/aws to version 5.4.0
+
 ## 2023-10-16 - Release 0.4.1
 - Add variable for eks cluster volume size and enable ebs optimzed
 

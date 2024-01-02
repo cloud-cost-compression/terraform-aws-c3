@@ -25,6 +25,8 @@ module "c3" {
 
   vpc_cidr = "10.0.0.0/16"
   region   = "eu-west-1"
+
+  enable_nat_gateway = false
   
   controller_instance_name = "c3-ec2-controller"
   controller_instance_type = "t3.small"
@@ -69,7 +71,7 @@ module "c3" {
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 19.17.2 |
 | <a name="module_eks_admin_iam_role"></a> [eks\_admin\_iam\_role](#module\_eks\_admin\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | ~> 5.30.0 |
 | <a name="module_evl_job_iam_role"></a> [evl\_job\_iam\_role](#module\_evl\_job\_iam\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | 5.20.0 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.0.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.4.0 |
 
 ## Resources
 
@@ -96,8 +98,12 @@ module "c3" {
 | [aws_s3_bucket_public_access_block.c3_metadata](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.c3_metadata](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_security_group.controller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.vpc_interface_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.eks_allow_access_from_controller](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_vpc_endpoint.ec2messages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.ssm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.ssmmessages](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_ami.ubuntu2204](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
@@ -118,6 +124,7 @@ module "c3" {
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `"c3-eks-cluster"` | no |
 | <a name="input_eks_cluster_version"></a> [eks\_cluster\_version](#input\_eks\_cluster\_version) | Version of the EKS cluster | `string` | `"1.28"` | no |
 | <a name="input_eks_cluster_volume_size"></a> [eks\_cluster\_volume\_size](#input\_eks\_cluster\_volume\_size) | Volume size of the EKS worker | `number` | `20` | no |
+| <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Deploy NAT gateway to the VPC, it is required for initial initialization of EC2 instance and EKS cluster. | `bool` | `true` | no |
 | <a name="input_evl_app_version"></a> [evl\_app\_version](#input\_evl\_app\_version) | Version of the C3 EVL application | `string` | n/a | yes |
 | <a name="input_evl_s3_bucket_name"></a> [evl\_s3\_bucket\_name](#input\_evl\_s3\_bucket\_name) | S3 bucket name where EVL dependencies are stored | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | n/a | yes |
